@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdint.h>
 #include <stdbool.h>
 #include "keycode.h"
+#include "quantum_keycodes.h"
 #include "action.h"
 #include "action_code.h"
 #include "action_layer.h"

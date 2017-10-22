@@ -38,7 +38,9 @@ static action_t keycode_to_action(uint8_t keycode);
 __attribute__ ((weak))
 action_t action_for_key(uint8_t layer, keypos_t key)
 {
-    uint8_t keycode = keymap_key_to_keycode(layer, key);
+    // Among the core, keymap_key_to_keycode is used only this place.
+    // uint8_t keycode = keymap_key_to_keycode(layer, key);
+    uint16_t keycode = keymap_key_to_qmkkeycode(layer, key);
     switch (keycode) {
         case KC_FN0 ... KC_FN31:
             return keymap_fn_to_action(keycode);
@@ -226,7 +228,7 @@ action_t keymap_fn_to_action(uint8_t keycode)
 #else
 
 /* user keymaps should be defined somewhere */
-extern const uint8_t keymaps[][MATRIX_ROWS][MATRIX_COLS];
+extern const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS];
 extern const action_t fn_actions[];
 
 __attribute__ ((weak))
@@ -237,6 +239,14 @@ uint8_t keymap_key_to_keycode(uint8_t layer, keypos_t key)
 #else
     return keymaps[(layer)][(key.row)][(key.col)];
 #endif
+}
+
+// QMK version of keymap_key_to_keycode
+__attribute__ ((weak))
+uint16_t keymap_key_to_qmkkeycode(uint8_t layer, keypos_t key)
+{
+    // Read entire word (16bits)
+    return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
 }
 
 __attribute__ ((weak))
