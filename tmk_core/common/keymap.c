@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keymap.h"
 #include "report.h"
 #include "keycode.h"
+#include "quantum_keycodes.h"
 #include "action_layer.h"
 #include "action.h"
 #include "action_macro.h"
@@ -31,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 extern keymap_config_t keymap_config;
 #endif
 
-static action_t keycode_to_action(uint8_t keycode);
+static action_t keycode_to_action(uint16_t keycode);
 
 
 /* converts key to action */
@@ -136,13 +137,20 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 
 
 
-/* translates keycode to action */
-static action_t keycode_to_action(uint8_t keycode)
+/* translates qmk keycode to action
+ * about qmk extension part, only MODS are supported for now.
+ */
+static action_t keycode_to_action(uint16_t keycode)
 {
     switch (keycode) {
         case KC_A ... KC_EXSEL:
         case KC_LCTRL ... KC_RGUI:
             return (action_t)ACTION_KEY(keycode);
+            break;
+        case QK_MODS ... QK_MODS_MAX:
+            // Has a modifier
+            // Split it up
+            return (action_t)ACTION_MODS_KEY(keycode >> 8, keycode & 0xFF); // adds modifier to key
             break;
         case KC_SYSTEM_POWER ... KC_SYSTEM_WAKE:
             return (action_t)ACTION_USAGE_SYSTEM(KEYCODE2SYSTEM(keycode));
