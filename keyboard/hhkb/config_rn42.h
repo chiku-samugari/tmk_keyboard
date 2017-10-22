@@ -41,11 +41,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 /* period of tapping(ms) */
-#define TAPPING_TERM    300
+#define TAPPING_TERM    200
 /* tap count needed for toggling a feature */
-#define TAPPING_TOGGLE  5
+#define TAPPING_TOGGLE  2
 /* Oneshot timeout(ms) */
-#define ONESHOT_TIMEOUT 300
+#define ONESHOT_TIMEOUT 200
 
 /* Boot Magic salt key: Space */
 #define BOOTMAGIC_KEY_SALT      KC_SPACE
